@@ -1,0 +1,58 @@
+---
+title       : Motor Trend Project 
+subtitle    : Fuel Efficiency by Automobile Characteristics
+author      : Hsiao-shan Yang
+job         : 
+framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
+highlighter : highlight.js  # {highlight.js, prettify, highlight}
+hitheme     : solarized_light      # 
+widgets     : [mathjax, bootstrap, shiny, interactive]            # {mathjax, quiz, bootstrap}
+mode        : selfcontained # {standalone, draft}
+knit        : slidify::knit2slides
+ext_widgets: {rCharts: [libraries/nvd3]}
+runtime: shiny
+---
+
+## Purpose of the shiny app
+
+To visualize and present the impact on fuel efficiency in terms of miles/gallon by different factors:
+
+1. Type of transmissions 
+2. Number of cylinders
+3. Number of forward gears
+
+The shiny app built for this project is designed to show the aveage mpg and histogram of mpg by distinct automobile charateristics. The shiny app can be accessed at http://yanghs.shinyapps.io/my_app.
+
+---
+## Data
+
+The data was extracted from the 1974 Motor Trend US magazine, and comprises fuel consumption and 10 aspects of automobile design and performance for 32 automobiles (1973-74 models). The data can be accessed by loading mtcars dataset in R. The variable description is as follows. 
+```{r, echo=FALSE}
+mtcars <- mtcars
+mtcars$am <- factor(mtcars$am, labels = c("Automatic", "Manual"))
+mtcars$cyl <- as.factor(mtcars$cyl)
+mtcars$gear <- as.factor(mtcars$gear)
+```
+
+```{r}
+str(mtcars)
+round(sapply(mtcars, FUN = function(x) { c(mean = mean(x), sd = sd(x)) }), digits=2)
+```
+
+---
+## Histogram
+Use the default setting, we can see the following histograms. It graphs the mpg by the type of transmissions when the binwidth is set to be 5. The binwidth can be adjusted with the slider and the automobile charaterics can be changed by selecting from the list of Variables.
+
+```{r, fig.width=6, fig.height=5}
+library(ggplot2)
+ggplot(mtcars, aes(x=mpg)) + geom_histogram(binwidth=5,colour="white") + facet_grid(.~am)
+```
+
+
+
+---
+## Results
+
+- The figure suggests that cars with manual transmissions perform better in terms of fuel efficiency.
+- The result shows that the number of cylinders negatively correlates to fuel efficiency.
+- Based on the histogram, the number of gears does not show a strong positive relation with fuel efficiency, and it might be due to lack of data points with high number of gears.
